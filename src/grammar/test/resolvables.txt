@@ -1,0 +1,113 @@
+# Resolvable
+
+{{ abc }}
+
+==>
+
+Document(
+  Resolvable
+)
+
+# Resolvable, Text
+
+{{ abc }}xyz
+
+==>
+
+Document(Resolvable, Text)
+
+# Text, Resolvable
+
+xyz{{ abc }}
+
+==>
+
+Document(Text, Resolvable)
+
+# Regular tag, Resolvable, regular tag
+
+<foo>{{ abc }}</foo>
+
+==>
+
+Document(
+  Element(
+    OpenTag(StartTag,TagName,EndTag),
+    Resolvable
+    CloseTag(StartCloseTag,TagName,EndTag)
+  )
+)
+
+# Resolvable then regular tags
+
+{{ abc }}<foo></foo>
+
+==>
+
+Document(
+  Resolvable,
+  Element(
+    OpenTag(StartTag,TagName,EndTag),
+    CloseTag(StartCloseTag,TagName,EndTag)
+  )
+)
+
+# Regular tags then resolvable
+
+<foo></foo>{{ abc }}
+
+==>
+
+Document(
+  Element(
+    OpenTag(StartTag,TagName,EndTag),
+    CloseTag(StartCloseTag,TagName,EndTag)
+  ),
+  Resolvable
+)
+
+# Regular tag, Resolvable, Text, regular tag
+
+<foo>{{ abc }}xyz</foo>
+
+==>
+
+Document(
+  Element(
+    OpenTag(StartTag,TagName,EndTag),
+    Resolvable
+    Text,
+    CloseTag(StartCloseTag,TagName,EndTag)
+  )
+)
+
+# Regular tag, Text, Resolvable, regular tag
+
+<foo>xyz{{ abc }}</foo>
+
+==>
+
+Document(
+  Element(
+    OpenTag(StartTag,TagName,EndTag),
+    Text,
+    Resolvable,
+    CloseTag(StartCloseTag,TagName,EndTag)
+  )
+)
+
+# Regular tag, Text, Resolvable, Text, regular tag
+
+<foo>xyz{{ abc }}xyz</foo>
+
+==>
+
+Document(
+  Element(
+    OpenTag(StartTag,TagName,EndTag),
+    Text,
+    Resolvable,
+    Text,
+    CloseTag(StartCloseTag,TagName,EndTag)
+  )
+)
